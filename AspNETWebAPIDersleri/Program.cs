@@ -1,3 +1,6 @@
+using LMS.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,7 +19,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-
+//DB Config
+builder.Services.AddDbContext<LMSDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+});
 
 var app = builder.Build();
 
