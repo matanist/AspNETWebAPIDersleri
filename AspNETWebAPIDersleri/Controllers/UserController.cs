@@ -1,4 +1,5 @@
 ﻿using LMS.Data.Entities;
+using LMS.Data.Repositories.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,45 +9,42 @@ namespace AspNETWebAPIDersleri.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly LMSDBContext _context;
-        public UserController(LMSDBContext context)
+        //private readonly LMSDBContext _context;
+        private readonly IUserRepository _userRepository;
+        public UserController(IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             //_context = new LMSDBContext();
-            _context = context;
+            //_context = context;
         }
         [HttpGet]
-        public List<User> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return _context.Users.ToList();
+            return await _userRepository.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public User Get(int id)
+        public async Task<User> Get(int id)
         {
-            return _context.Users.Find(id);
+            return await _userRepository.GetByIdAsync(id);
         }
 
         [HttpPost]
-        public void Post([FromBody] User user)
+        public async Task<User> Post([FromBody] User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            return await _userRepository.InsertAsync(user);
         }
 
         [HttpPut]
-        public User Put([FromBody] User user)
+        public async Task<User> Put([FromBody] User user)
         {
-            _context.Users.Update(user);
-            _context.SaveChanges();
-            return user;
+            return await _userRepository.UpdateAsync(user);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<User> Delete(int id)
         {
-            var user = _context.Users.Find(id);
-            _context.Users.Remove(user);
-            _context.SaveChanges();
+            return await _userRepository.DeleteAsync(id);
         }
     }
 }
