@@ -1,6 +1,7 @@
 using LMS.Data.Entities;
 using LMS.Data.Repositories;
 using LMS.Data.Repositories.User;
+using LMS.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,7 @@ builder.Services.AddDbContext<LMSDBContext>(options =>
 //Dependency Injection
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();
