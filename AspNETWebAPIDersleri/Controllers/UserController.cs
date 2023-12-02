@@ -1,4 +1,5 @@
-﻿using LMS.Data.Entities;
+﻿using AspNETWebAPIDersleri.Models.User;
+using LMS.Data.Entities;
 
 using LMS.Services.UserService;
 using Microsoft.AspNetCore.Http;
@@ -28,8 +29,16 @@ namespace AspNETWebAPIDersleri.Controllers
         }
 
         [HttpPost]
-        public async Task<User> Post([FromBody] User user)
+        public async Task<User> Post([FromBody] UserRequestModel userRequestModel)
         {
+            var user = new User
+            {
+                Firstname = userRequestModel.Firstname, 
+                Lastname = userRequestModel.Lastname,
+                Email = userRequestModel.Email, 
+                Password = userRequestModel.Password, 
+                RoleId = userRequestModel.RoleId
+            };
             return await _userService.InsertAsync(user);
         }
 
