@@ -1,3 +1,4 @@
+using AutoMapper;
 using LMS.Data.Entities;
 using LMS.Data.Repositories;
 using LMS.Data.Repositories.User;
@@ -34,6 +35,13 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+//AutoMapper Config
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new LMS.Services.Mappers.MappingProfile());
+});
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
