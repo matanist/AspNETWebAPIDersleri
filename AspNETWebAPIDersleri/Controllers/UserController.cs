@@ -20,19 +20,21 @@ namespace AspNETWebAPIDersleri.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<UserResponseModel>> Get()
         {
-            return await _userService.GetAllAsync();
+            var users =  await _userService.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserResponseModel>>(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<User> Get(int id)
+        public async Task<UserResponseModel> Get(int id)
         {
-            return await _userService.GetByIdAsync(id);
+            var user =  await _userService.GetByIdAsync(id);
+            return _mapper.Map<UserResponseModel>(user);
         }
 
         [HttpPost]
-        public async Task<User> Post([FromBody] UserRequestModel userRequestModel)
+        public async Task<UserResponseModel> Post([FromBody] UserRequestModel userRequestModel)
         {
             //var user = new User
             //{
@@ -44,19 +46,23 @@ namespace AspNETWebAPIDersleri.Controllers
             //};
 
             var user = _mapper.Map<User>(userRequestModel);
-            return await _userService.InsertAsync(user);
+            var createdUser =  await _userService.InsertAsync(user);
+            return _mapper.Map<UserResponseModel>(createdUser);
         }
 
         [HttpPut]
-        public async Task<User> Put([FromBody] User user)
+        public async Task<UserResponseModel> Put([FromBody] UserRequestModel userRequestModel)
         {
-            return await _userService.UpdateAsync(user);
+            var user = _mapper.Map<User>(userRequestModel);
+            var updatedUser =  await _userService.UpdateAsync(user);
+            return _mapper.Map<UserResponseModel>(updatedUser);
         }
 
         [HttpDelete("{id}")]
-        public async Task<User> Delete(int id)
+        public async Task<UserResponseModel> Delete(int id)
         {
-            return await _userService.DeleteAsync(id);
+            var deletedUser =  await _userService.DeleteAsync(id);
+            return _mapper.Map<UserResponseModel>(deletedUser);
         }
     }
 }
