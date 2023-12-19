@@ -3,7 +3,6 @@ using AutoMapper;
 using LMS.Data.Entities;
 using LMS.Services.Models;
 using LMS.Services.UserService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNETWebAPIDersleri.Controllers
@@ -36,15 +35,6 @@ namespace AspNETWebAPIDersleri.Controllers
         [HttpPost]
         public async Task<UserResponseModel> Post([FromBody] UserRequestModel userRequestModel)
         {
-            //var user = new User
-            //{
-            //    Firstname = userRequestModel.Firstname, 
-            //    Lastname = userRequestModel.Lastname,
-            //    Email = userRequestModel.Email, 
-            //    Password = userRequestModel.Password, 
-            //    RoleId = userRequestModel.RoleId
-            //};
-
             var user = _mapper.Map<User>(userRequestModel);
             var createdUser =  await _userService.InsertAsync(user);
             return _mapper.Map<UserResponseModel>(createdUser);
